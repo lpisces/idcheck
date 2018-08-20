@@ -36,7 +36,13 @@ func FindIDInfoByNumber(number string) (i *IDInfo, err error) {
 */
 
 func (i *IDInfo) Match() bool {
-	return !DB.Where("number = ? AND name = ?", i.Number, i.Name).First(&IDInfo{}).RecordNotFound()
+	ii := &IDInfo{}
+	if DB.Where("`number` = ?", i.Number).First(ii).RecordNotFound() {
+		return false
+	}
+	return i.Name == ii.Name
+
+	//return !DB.Where("number = ? AND name = ?", i.Number, i.Name).First(&IDInfo{}).RecordNotFound()
 }
 
 func (i *IDInfo) CheckByAPI(conf *config.IDCheckAPI) (ok bool, err error) {
