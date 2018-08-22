@@ -35,12 +35,12 @@ func FindIDInfoByNumber(number string) (i *IDInfo, err error) {
 }
 */
 
-func (i *IDInfo) Match() bool {
+func (i *IDInfo) Match() (match bool, cache bool) {
 	ii := &IDInfo{}
 	if DB.Where("`number` = ?", i.Number).First(ii).RecordNotFound() {
-		return false
+		return false, false
 	}
-	return i.Name == ii.Name
+	return i.Name == ii.Name, true
 
 	//return !DB.Where("number = ? AND name = ?", i.Number, i.Name).First(&IDInfo{}).RecordNotFound()
 }

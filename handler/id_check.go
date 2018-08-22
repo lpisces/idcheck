@@ -63,11 +63,19 @@ func HandleIDCheck(conf *config.IDCheckAPI) func(c echo.Context) error {
 		}
 
 		// find in db
-		if i.Match() {
+		match, cache := i.Match()
+		if match {
 			r.Status = http.StatusOK
 			r.Msg = "OK"
 			r.Data.Cache = true
 			r.Data.Match = true
+			return c.JSON(http.StatusOK, r)
+		}
+		if !match && cache {
+			r.Status = http.StatusOK
+			r.Msg = "OK"
+			r.Data.Cache = true
+			r.Data.Match = false
 			return c.JSON(http.StatusOK, r)
 		}
 
