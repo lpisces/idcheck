@@ -47,5 +47,5 @@ func GetDB() (*gorm.DB, error) {
 }
 
 func Migrate() {
-	DB.AutoMigrate(&Token{}, &IDInfo{})
+	DB.AutoMigrate(&Token{}, &IDInfo{}, &APILog{})
 }
