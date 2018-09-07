@@ -20,11 +20,36 @@ type IDInfo struct {
 }
 
 func (i *IDInfo) Match() (match bool, cache bool) {
-	ii := &IDInfo{}
-	if DB.Where("`number` = ? and `name` = ?", i.Number, i.Name).First(ii).RecordNotFound() {
+
+	ii := []IDInfo{}
+
+	DB.Where("`number` = ?", i.Number).Find(&ii)
+
+	if len(ii) == 0 {
 		return false, false
 	}
-	return ii.Result == "A", true
+
+	hasA := false
+	for _, v := range ii {
+
+		if v.Result == "A" {
+			hasA = true
+		}
+
+		if v.Name == i.Name && v.Result == "A" {
+			return true, true
+		}
+
+		if v.Name == i.Name && v.Result != "A" {
+			return false, true
+		}
+	}
+
+	if hasA {
+		return false, true
+	}
+
+	return false, false
 }
 
 func (i *IDInfo) CheckByAPI(conf *config.IDCheckAPI) (ok bool, err error) {
