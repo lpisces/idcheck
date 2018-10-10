@@ -55,6 +55,7 @@ func serve(c *cli.Context) (err error) {
 	Conf := &config.Config{
 		false,
 		"config.ini",
+		"./public/upload",
 		&config.Srv{
 			"0.0.0.0",
 			"1323",

@@ -7,8 +7,9 @@ import (
 
 type (
 	Config struct {
-		Debug      bool
-		ConfigFile string
+		Debug            bool
+		ConfigFile       string
+		IDImageUploadDir string
 		*Srv
 		*DB
 		*IDCheckAPI
