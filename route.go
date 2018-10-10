@@ -21,6 +21,7 @@ func route(e *echo.Echo, conf *config.Config) (err error) {
 	e.GET("/", handler.HandleWelcome())
 	e.GET("/id_check", handler.HandleIDCheck(conf.IDCheckAPI))
 	e.POST("/upload", handler.HandleIDImageUpload(conf))
+	e.POST("/download", handler.HandleIDImageDownload(conf))
 
 	return
 }

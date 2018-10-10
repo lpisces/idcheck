@@ -1,3 +1,4 @@
 idcheck
 *.config.ini
 id.sql
+public/upload
