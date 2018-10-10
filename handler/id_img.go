@@ -196,12 +196,20 @@ func mergeImg(path1, path2, path3 string) error {
 		return err
 	}
 
+	watermark, err := imaging.Open("./watermark.png")
+	if err != nil {
+		return err
+	}
+
 	src1Fit := imaging.Fit(src1, 500, 300, imaging.Lanczos)
 	src2Fit := imaging.Fit(src2, 500, 300, imaging.Lanczos)
+	watermarkFit := imaging.Fit(watermark, 520, 630, imaging.Lanczos)
 
 	dst := imaging.New(520, 630, color.White)
+	//dst = imaging.Paste(dst, watermarkFit, image.Pt(0, 0))
 	dst = imaging.Paste(dst, src1Fit, image.Pt(10, 10))
 	dst = imaging.Paste(dst, src2Fit, image.Pt(10, 320))
+	dst = imaging.Overlay(dst, watermarkFit, image.Pt(0, 0), 0.5)
 
 	return imaging.Save(dst, path3)
 }
