@@ -64,13 +64,19 @@ func HandleIDImageDownload(conf *config.Config) func(c echo.Context) error {
 		var notFound, zipFiles []string
 		for _, id := range id_arr {
 			log.Info(id)
-			filename := path + "/" + id + "_merged.jpg"
+			filename := path + "/" + id + ".jpg"
 			log.Info(filename)
 			if _, err := os.Stat(filename); os.IsNotExist(err) {
 				notFound = append(notFound, id)
 				continue
 			}
 			zipFiles = append(zipFiles, filename)
+		}
+
+		if len(zipFiles) == 0 {
+			r.Msg = "no id found"
+			r.Status = http.StatusNotFound
+			return c.JSON(http.StatusOK, r)
 		}
 
 		output := fmt.Sprintf("%s/%s%s.zip", path, "ids_", time.Now().Format("20060102150405"))
@@ -175,7 +181,7 @@ func HandleIDImageUpload(conf *config.Config) func(c echo.Context) error {
 		defer func() {
 			path1 := conf.IDImageUploadDir + "/" + id + "_" + "front" + ".jpg"
 			path2 := conf.IDImageUploadDir + "/" + id + "_" + "back" + ".jpg"
-			path3 := conf.IDImageUploadDir + "/" + id + "_" + "merged" + ".jpg"
+			path3 := conf.IDImageUploadDir + "/" + id + ".jpg"
 			mergeImg(path1, path2, path3)
 		}()
 
