@@ -57,7 +57,8 @@ func HandleIDImageDownload(conf *config.Config) func(c echo.Context) error {
 		}
 
 		ids := c.FormValue("ids")
-		path := conf.IDImageUploadDir
+		//path := conf.IDImageUploadDir
+		path := "./public"
 
 		id_arr := strings.Split(string(ids), ",")
 
