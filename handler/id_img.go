@@ -65,7 +65,7 @@ func HandleIDImageDownload(conf *config.Config) func(c echo.Context) error {
 		var notFound, zipFiles []string
 		for _, id := range id_arr {
 			log.Info(id)
-			filename := path + "/" + id + ".jpg"
+			filename := conf.IDImageUploadDir + "/" + id + ".jpg"
 			log.Info(filename)
 			if _, err := os.Stat(filename); os.IsNotExist(err) {
 				notFound = append(notFound, id)
