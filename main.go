@@ -75,6 +75,7 @@ func serve(c *cli.Context) (err error) {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.Gzip())
+	e.Use(middleware.CORS())
 
 	e.HideBanner = true
 
