@@ -87,6 +87,9 @@ func HandleIDImageDownload2(conf *config.Config) func(c echo.Context) error {
 			//log.Info(id)
 			filename := conf.IDImageUploadDir + "/" + id.ID + ".jpg"
 			newFilename := tmpDir + id.Filename + ".jpg"
+			if len(id.Filename) == 0 {
+				newFilename = tmpDir + id.ID + ".jpg"
+			}
 
 			input, err := ioutil.ReadFile(filename)
 			if err != nil {
