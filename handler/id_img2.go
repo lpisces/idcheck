@@ -87,6 +87,12 @@ func HandleIDImageDownload2(conf *config.Config) func(c echo.Context) error {
 			//log.Info(id)
 			filename := conf.IDImageUploadDir + "/" + id.ID + ".jpg"
 			newFilename := tmpDir + id.Filename + ".jpg"
+
+			log.Info(newFilename)
+			if _, err := os.Stat(newFilename); os.IsNotExist(err) {
+				notFound = append(notFound, id.ID)
+				continue
+			}
 			if len(id.Filename) == 0 {
 				newFilename = tmpDir + id.ID + ".jpg"
 			}
@@ -100,11 +106,6 @@ func HandleIDImageDownload2(conf *config.Config) func(c echo.Context) error {
 				return err
 			}
 
-			log.Info(newFilename)
-			if _, err := os.Stat(newFilename); os.IsNotExist(err) {
-				notFound = append(notFound, id.ID)
-				continue
-			}
 			zipFiles = append(zipFiles, newFilename)
 		}
 
