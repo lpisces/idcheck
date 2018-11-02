@@ -13,6 +13,13 @@ import (
 	"time"
 )
 
+var IDCheckHistory map[string]int64
+var CheckGapTime int64 = 1000 * 1000 * 1000 // nano second
+
+func init() {
+	IDCheckHistory = make(map[string]int64)
+}
+
 func HandleIDCheck(conf *config.IDCheckAPI) func(c echo.Context) error {
 
 	type (
@@ -78,6 +85,14 @@ func HandleIDCheck(conf *config.IDCheckAPI) func(c echo.Context) error {
 			r.Data.Match = false
 			return c.JSON(http.StatusOK, r)
 		}
+
+		if t, ok := IDCheckHistory[i.Number]; ok {
+			if time.Now().UnixNano()-t < CheckGapTime {
+				log.Info(i.Number + " waiting")
+				time.Sleep(time.Duration(CheckGapTime) * time.Nanosecond)
+			}
+		}
+		IDCheckHistory[i.Number] = time.Now().UnixNano()
 
 		// find in api
 		ok, err := i.CheckByAPI(conf)
