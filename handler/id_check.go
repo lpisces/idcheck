@@ -93,6 +93,7 @@ func HandleIDCheck(conf *config.IDCheckAPI) func(c echo.Context) error {
 			}
 		}
 		IDCheckHistory[i.Number] = time.Now().UnixNano()
+		log.Info(fmt.Sprintf("history length is %d", len(IDCheckHistory)))
 
 		// find in api
 		ok, err := i.CheckByAPI(conf)
