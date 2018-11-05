@@ -13,6 +13,7 @@ type (
 		*Srv
 		*DB
 		*IDCheckAPI
+		*SMSAPI
 	}
 
 	Srv struct {
@@ -32,6 +33,13 @@ type (
 		Url      string
 		Username string
 		Password string
+	}
+
+	SMSAPI struct {
+		URL      string
+		Username string
+		Password string
+		PID      string
 	}
 )
 

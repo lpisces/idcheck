@@ -62,6 +62,7 @@ func serve(c *cli.Context) (err error) {
 		},
 		&config.DB{},
 		&config.IDCheckAPI{},
+		&config.SMSAPI{},
 	}
 
 	if err = Conf.Load(c); err != nil {

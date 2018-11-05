@@ -1,14 +1,12 @@
 package handler
 
 import (
-	"crypto/md5"
 	"fmt"
 	"github.com/labstack/echo"
 	"github.com/labstack/gommon/log"
 	"github.com/lpisces/idcheck/config"
 	"github.com/lpisces/idcheck/model"
 	"net/http"
-	"net/url"
 	"strconv"
 	"time"
 )
@@ -117,25 +115,4 @@ func HandleIDCheck(conf *config.IDCheckAPI) func(c echo.Context) error {
 		r.Data.Match = false
 		return c.JSON(http.StatusOK, r)
 	}
-}
-
-func checkSign(v url.Values) bool {
-
-	sign := v.Get("sign")
-	v.Del("sign")
-
-	key := v.Get("key")
-	if "" == key {
-		return false
-	}
-	token, err := model.FindTokenByKey(key)
-	if err != nil {
-		return false
-	}
-
-	orig := token.Secret + v.Encode()
-	log.Info(orig)
-	vSign := fmt.Sprintf("%x", md5.Sum([]byte(orig)))
-
-	return vSign == sign
 }
